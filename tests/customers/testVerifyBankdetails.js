@@ -4,20 +4,20 @@ const DvaraGold = require('../../cliient/dvaragold');
 const data =
     [
         {
-            "customerId": "0bd3f9b5c5ade776c49e1e19df7d481b",
-            // "bankAccount": { "accountNumber": "AICS001NewNumber", "ifsc": "HDFC0210002", "accountName": "Amit", "bankName": "HDFC", "branchName": "Pune" },
-            "upiAccount": { address: "AICS002@hdfcb" }
+            "customerId": "iamconsentcustomer",
+            "bankAccount": { "accountNumber": "     31232123     ", "ifsc": "HDFC0210002", "accountName": "    Amit     ", "bankName": "   HDFC   ", "branchName": "    Pune    " },
+            // "upiAccount": { address: "AICS002@hdfcb" }
         },
-        {
-            "customerId": "0edaaf040de9bc7b0323e9065e3c735e",
-            "bankAccount": { "accountNumber": "EXT0APIUpdatedNumber", "ifsc": "AXIS0210002", "accountName": "EXT0", "bankName": "AXIS", "branchName": "Mumbai" },
-            "upiAccount": { address: "EXT0@axisb" }
-        },
-        {
-            "customerId": "EXT2",
-            "bankAccount": { "accountNumber": "EXT2APIUpdatedNumber", "ifsc": "UTI0210002", "accountName": "EXT2", "bankName": "UTI", "branchName": "DELHI" },
-            "upiAccount": { address: "EXT2@axisb" }
-        }
+        // {
+        //     "customerId": "0edaaf040de9bc7b0323e9065e3c735e",
+        //     "bankAccount": { "accountNumber": "EXT0APIUpdatedNumber", "ifsc": "AXIS0210002", "accountName": "EXT0", "bankName": "AXIS", "branchName": "Mumbai" },
+        //     "upiAccount": { address: "EXT0@axisb" }
+        // },
+        // {
+        //     "customerId": "EXT2",
+        //     "bankAccount": { "accountNumber": "EXT2APIUpdatedNumber", "ifsc": "UTI0210002", "accountName": "EXT2", "bankName": "UTI", "branchName": "DELHI" },
+        //     "upiAccount": { address: "EXT2@axisb" }
+        // }
     ]
 
 async function test() {

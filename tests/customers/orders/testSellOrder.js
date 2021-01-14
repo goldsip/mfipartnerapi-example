@@ -5,7 +5,7 @@ const DvaraGold = require('../../../cliient/dvaragold');
 //AAA111CST001
 //AAA333CST001
 
-const extCustomerId = "ext-vighnesh";
+const extCustomerId = "AAA111CST001";
 const bullion = {
     "id": "G3",
     "bullionShortName": "G22K",
