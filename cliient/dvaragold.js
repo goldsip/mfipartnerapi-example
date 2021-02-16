@@ -493,6 +493,9 @@ class Client {
         }
         return get(this._client, `/customers/${extCustomerId}/productshowcase`, additionalParametrs)
     }
+    getJewelleryValue(extCustomerId, data) {
+        return post(this._client, `/customers/${extCustomerId}/jewlleryvalue`, data)
+    }
     getProducts(queryStringParameters, extCustomerId) {
         const additionalParametrs = {
             queryParams: queryStringParameters
