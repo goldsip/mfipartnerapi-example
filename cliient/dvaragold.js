@@ -488,7 +488,7 @@ class Client {
         return put(this._client, `/customers/${extCustomerId}`, customer)
     }
     getGatewayConfig(customerId) {
-        return post(this._client, `/payments/${customerId}/gatewayconfig`, { test: 'dummy' })
+        return post(this._client, `/payments/gatewayconfig`, { test: 'dummy' })
     }
     getProduct(id,extCustomerId) {
         return get(this._client, `/customers/${extCustomerId}/products/${id}`)
