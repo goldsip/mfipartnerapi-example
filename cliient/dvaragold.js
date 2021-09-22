@@ -692,8 +692,8 @@ class Client {
     }
 
     // record interest
-    getRecords() {
-        return get(this._client, `/currentpromotions`, )
+    createRecordInterest(customerId, data) {
+        return post(this._client, `/customers/${customerId}/recordinterest`, data)
     }
 
     // product catalague
