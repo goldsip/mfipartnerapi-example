@@ -702,6 +702,11 @@ class Client {
     // contact support
 
 
+    createContactSupport(customerId, data) {
+        return post(this._client, `/customers/${customerId}/contactsupport`, data)
+    }
+
+
 
 }
 
