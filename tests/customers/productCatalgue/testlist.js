@@ -3,8 +3,8 @@ const config = require('../../../config/credentials.json')[STAGE];
 const DvaraGold = require('../../../cliient/dvaragold');
 const extCustomerId = 'AMITCS002'
 const queryParams = {
-    bullionName: 'Silver',
-    category: 'coin'
+    // bullionName: 'Silver',
+    // category: 'coin'
 }
 
 
