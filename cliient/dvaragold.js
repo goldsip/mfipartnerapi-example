@@ -698,6 +698,16 @@ class Client {
 
     // product catalague
 
+    getProductCatalogue(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+    }
+
+    getProductById(customerId, productId) {
+        return get(this._client, `/customers/${customerId}/products/${productId}`)
+    }
 
     // contact support
 
