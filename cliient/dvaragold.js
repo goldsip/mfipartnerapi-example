@@ -682,6 +682,27 @@ class Client {
         return get(this._client, `/pincode/${pincode}`, )
     }
 
+
+    // current promotions
+    getCurrentpromotions(queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/currentpromotions`, additionalParametrs)
+    }
+
+    // record interest
+    getRecords() {
+        return get(this._client, `/currentpromotions`, )
+    }
+
+    // product catalague
+
+
+    // contact support
+
+
+
 }
 
 exports.Client = async function(config) {
