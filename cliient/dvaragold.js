@@ -717,6 +717,13 @@ class Client {
     }
 
 
+    //product order
+
+    productOrderCreate(extCustomerId, order) {
+        return post(this._client, `/customers/${extCustomerId}/productorder`, order)
+
+    }
+
 
 }
 
