@@ -725,6 +725,23 @@ class Client {
     }
 
 
+    // advance purchase
+
+    advancepurchaselist(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+    }
+
+    advancepurchaseget(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+    }
+
+
 }
 
 exports.Client = async function(config) {

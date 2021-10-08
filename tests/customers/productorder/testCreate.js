@@ -1,7 +1,7 @@
-let STAGE = process.env.mygold_stage ? process.env.mygold_stage : "dev";
+let STAGE = process.env.mygold_stage ? process.env.mygold_stage : "kgfs";
 const config = require("../../../config/credentials.json")[STAGE];
 const DvaraGold = require("../../../cliient/dvaragold");
-const extCustomerId = "BMFIBR001CST002";
+const extCustomerId = "2105038865955008";
 const bullion = {
     bullionShortName: "G22K",
     bullionName: "Gold",
@@ -11,74 +11,67 @@ const bullion = {
     id: "G3",
 };
 
+const products = ["883a86b0-0e33-11eb-a474-a3176ffc8b4e"];
+
 const order = {
-    "agent": {
-        "name": {
-            "first": "default",
-            "middle": "",
-            "last": "default"
-        },
-        "extAgentId": "DEFAULT_AGENT"
-    },
-    "productItems": [{
-        productId: '376d8750-0eb0-11eb-aa60-1ba43d87674d',
-        serialNumber: '17540b28-f9b0-4000-875b-d3280d833780'
-    }],
+    "agent": { "extAgentId": "DV12AG", "name": { "first": "default", "last": "agent" } },
+    "productItems": [],
     "paymentPlan": {
         "useBullionBalance": [{
-            "bullion": bullion,
-            "maxBullionWtGm": 1
-        }],
-        "alternatePaymentMode": "partnercollect"
+            "bullion": {
+                "id": "G3",
+                "bullionName": "Gold",
+                "purity": { "displayValue": "22Kt (91.6%)", "value": "916" }
+            },
+            "maxBullionWtGm": 12.748
+        }]
     },
-    "productPaymentDetails": [{
-        "paymentTotalValueInr": 0,
-        "paymentDate": new Date().toISOString(),
-        "txnReference": "string",
-        "txnDetails": {
-            "neft_reference": "OC45rt456"
-        },
-        "paymentInstrumentType": "NEFT"
-    }],
-    "shipment": {
-        "shippingAddress": {
-            "houseNumber": "string",
-            "streetName": "string",
-            "area": "string",
-            "cityOrVillage": "string",
-            "postOffice": "string",
-            "district": "string",
-            "pinCode": 0,
-            "state": "IN-AN",
-            "stdCode": 0,
-            "landmark": "string",
-            "country": "string"
-        },
-    },
-    "extReferenceId": "string",
-    "orderdetail": {
-        "additionalProp1": "string",
-        "additionalProp2": "string",
-        "additionalProp3": "string"
-    }
-};
+    "shipment": { "shippingAddress": { "houseNumber": "1", "streetName": "Baramati Phaltan raod", "area": "Khandaj", "cityOrVillage": "Baramati", "district": "Baramati", "pinCode": 413102, "state": "IN-MH", "landmark": "xyz", "country": "India" } },
+    "extReferenceId": "vaibhavkailaslohakare"
+}
 
-async function getRate(client) {
-    let rates = await client.bookBullionRate(extCustomerId, 'Gold', 'G3', 'jewellery')
-    if (rates && rates.length) {
-        return rates[0]
-    } else {
-        throw 'enable to get rates'
+async function getAvailableInventorytItem(client, productId) {
+    try {
+        let response = await client.getProductById(extCustomerId, productId)
+        if (response && response.inventoryitems.length) {
+            for (let inventory of response.inventoryitems) {
+                if (inventory.chargesamountinr > 0 || inventory.taxamountinr > 0) {
+                    return inventory
+                }
+            }
+            return response.inventoryitems[0]
+        } else {
+            throw new Error('Inventory not available for product')
+        }
+    } catch (e) {
+        throw e
     }
+}
+
+async function getProductItems(client) {
+    try {
+        let responses = []
+        for (let productId of products) {
+            let response = await getAvailableInventorytItem(client, productId)
+            responses.push({
+                productId: response.productid,
+                serialNumber: response.inventoryserialnumber,
+                bullionRateId: response.bullionrateid,
+                totalAmountInr: response.totalwithtaxinr,
+                chargesAmountInr: response.chargesamountinr,
+                taxAmountInr: response.taxamountinr,
+            })
+        }
+        return responses
+    } catch (e) {
+        throw e
+    }
+
 }
 
 async function test() {
     let client = await DvaraGold.Client(config);
-    const bullionRate = await getRate(client)
-    for (let item of order.productItems) {
-        item.bullionRateId = bullionRate.id
-    }
-
+    order.productItems = await getProductItems(client)
     return await client.productOrderCreate(extCustomerId, order);
 
 }
