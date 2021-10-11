@@ -9,7 +9,7 @@ const queryParams = {
 
 async function test() {
     let client = await DvaraGold.Client(config);
-    return await client.advancepurchaselist(extCustomerId, queryParams)
+    return await client.getcustomerForSDK(extCustomerId, queryParams)
 }
 test()
     .then(result => {

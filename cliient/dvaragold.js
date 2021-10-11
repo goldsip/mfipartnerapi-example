@@ -740,6 +740,14 @@ class Client {
         }
         return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
     }
+    getcustomerForSDK(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}`, additionalParametrs)
+    }
+
+
 
 
 }
