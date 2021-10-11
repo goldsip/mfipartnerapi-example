@@ -1,10 +1,9 @@
-let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'kgfs';
+let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'ui-sdk-dev-direct';
 const config = require('../../config/credentials.json')[STAGE];
 const DvaraGold = require('../../cliient/dvaragold');
-const extCustomerId = 'AMITCS002'
+const extCustomerId = 'EXT0'
 const queryParams = {
-    // bullionName: 'Silver',
-    // category: 'coin'
+    api_key: "pa4aG2HgvvQecEVVhpQ"
 }
 
 
