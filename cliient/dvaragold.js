@@ -734,11 +734,11 @@ class Client {
         return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
     }
 
-    advancepurchaseget(customerId, queryParams) {
+    advancepurchaseget(customerId, productId, queryParams) {
         const additionalParametrs = {
             queryParams: queryParams
         }
-        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+        return get(this._client, `/customers/${customerId}/products/${productId}`, additionalParametrs)
     }
     getcustomerForSDK(customerId, queryParams) {
         const additionalParametrs = {

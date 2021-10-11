@@ -3,7 +3,9 @@ const config = require('../../config/credentials.json')[STAGE];
 const DvaraGold = require('../../cliient/dvaragold');
 const extCustomerId = 'EXT0'
 const queryParams = {
-    api_key: config.api_key
+    api_key: config.api_key,
+    category: 'all',
+    bullionName: 'All'
 }
 
 
