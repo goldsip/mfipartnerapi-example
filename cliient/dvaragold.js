@@ -748,6 +748,14 @@ class Client {
     }
 
 
+    advanceOrderInvoice(customerId, orderId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/advanceorderinvoice/${orderId}`, additionalParametrs)
+    }
+
+
 
 
 }
