@@ -57,7 +57,7 @@ We recommend using AWS [API Gateway Client](https://www.npmjs.com/package/aws-ap
             "appClient":"DDDDDDD",
             "identityPool":"EEEEEEEE",
             "region":"FFFFFF",
-            "basePath":"https://testapi.mygold.co.in/test/partners/XXXX"
+            "basePath":"https://testapi.dvarasmartgold.in/test/partners/XXXX"
         },
         "prod":{
 
