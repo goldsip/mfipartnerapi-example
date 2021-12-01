@@ -32,25 +32,25 @@ function authenticate(config, callback) {
     console.log("Authenticating with User Pool");
 
     cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             callback(null, {
                 idToken: result.getIdToken().getJwtToken(),
                 accessToken: result.getAccessToken().getJwtToken()
             });
         },
-        onFailure: function (err) {
+        onFailure: function(err) {
             console.log(err.message ? err.message : err);
             callback(err, null);
         },
-        newPasswordRequired: function () {
+        newPasswordRequired: function() {
             console.log("Given user needs to set a new password");
             callback("Given user needs to set a new password", null);
         },
-        mfaRequired: function () {
+        mfaRequired: function() {
             console.log("MFA is not currently supported");
             callback("MFA is not currently supported", null);
         },
-        customChallenge: function () {
+        customChallenge: function() {
             console.log("Custom challenge is not currently supported");
             callback("Custom challenge is not currently supported", null);
         }
@@ -73,7 +73,7 @@ function getCredentials(config, userTokens, callback) {
         Logins: logins
     });
 
-    AWS.config.credentials.get(function (err) {
+    AWS.config.credentials.get(function(err) {
         if (err) {
             console.log(err.message ? err.message : err);
             callback(err, null)
@@ -85,12 +85,12 @@ function getCredentials(config, userTokens, callback) {
 }
 
 function authenticateClient(config, callback) {
-    authenticate(config, function (err, tokens) {
+    authenticate(config, function(err, tokens) {
         if (err) {
             callback(err, null);
             return;
         }
-        getCredentials(config, tokens, function (err, _tokens) {
+        getCredentials(config, tokens, function(err, _tokens) {
             if (err) {
                 callback(err, null);
                 return;
@@ -117,16 +117,14 @@ function authenticateClient(config, callback) {
 async function authenticateClientAsync(config) {
     return new Promise((resolve, reject) => {
         try {
-            authenticateClient(config, function (err, client, expireTime) {
+            authenticateClient(config, function(err, client, expireTime) {
                 if (err || !client) {
                     reject(err ? err : "Unable to authenticate");
-                }
-                else {
+                } else {
                     resolve({ client: client, expireTime: expireTime });
                 }
             })
-        }
-        catch (e) {
+        } catch (e) {
             reject(e);
         }
     })
@@ -135,10 +133,10 @@ async function get(client, api, additionalParametrs) {
     return new Promise((resolve, reject) => {
         client
             .invokeApi(null, api, 'GET', additionalParametrs)
-            .then(function (result) {
+            .then(function(result) {
                 resolve(result.data)
             })
-            .catch(function (result) {
+            .catch(function(result) {
                 reject(getErrorResponse(result));
             });
     })
@@ -151,10 +149,10 @@ async function post(client, api, parameters) {
                 'POST', {},
                 parameters
             )
-            .then(function (result) {
+            .then(function(result) {
                 resolve(result.data)
             })
-            .catch(function (result) {
+            .catch(function(result) {
                 reject(getErrorResponse(result));
             });
 
@@ -168,10 +166,10 @@ async function put(client, api, parameters) {
                 'PUT', {},
                 parameters
             )
-            .then(function (result) {
+            .then(function(result) {
                 resolve(result.data)
             })
-            .catch(function (result) {
+            .catch(function(result) {
                 reject(getErrorResponse(result));
             });
 
@@ -187,10 +185,10 @@ async function _delete(client, api, parameters) {
                 'DELETE', {},
                 parameters
             )
-            .then(function (result) {
+            .then(function(result) {
                 resolve(result.data)
             })
-            .catch(function (result) {
+            .catch(function(result) {
                 reject(getErrorResponse(result));
             });
 
@@ -205,8 +203,7 @@ function getErrorResponse(result) {
             statusText: result.response.statusText,
             data: result.response.data
         }
-    }
-    else {
+    } else {
         return result.message;
     }
 }
@@ -216,7 +213,7 @@ class Client {
         this._config = config;
         const self = this;
         return new Promise((resolve, reject) => {
-            self.renewClientToken(function (err, status) {
+            self.renewClientToken(function(err, status) {
                 resolve(self)
             })
         })
@@ -490,16 +487,19 @@ class Client {
     getGatewayConfig(customerId) {
         return post(this._client, `/payments/gatewayconfig`, { test: 'dummy' })
     }
-    getProduct(id,extCustomerId) {
+    getProduct(id, extCustomerId) {
         return get(this._client, `/customers/${extCustomerId}/products/${id}`)
     }
-    getProductShowcase(queryStringParameters,extCustomerId) {
+    getProductShowcase(queryStringParameters, extCustomerId) {
         const additionalParametrs = {
             queryParams: queryStringParameters
         }
         return get(this._client, `/customers/${extCustomerId}/productshowcase`, additionalParametrs)
     }
-    getProducts(queryStringParameters,extCustomerId) {
+    getJewelleryValue(extCustomerId, data) {
+        return post(this._client, `/customers/${extCustomerId}/jewlleryvalue`, data)
+    }
+    getProducts(queryStringParameters, extCustomerId) {
         const additionalParametrs = {
             queryParams: queryStringParameters
         }
@@ -572,39 +572,39 @@ class Client {
         return post(this._client, `/etforders/paymentlinks`, data)
     }
     getPaymentLinkEtf(id) {
-        return get(this._client, `/etforders/paymentlinks/${id}`,)
+        return get(this._client, `/etforders/paymentlinks/${id}`, )
     }
     getPaymentLinkRegular(id) {
-        return get(this._client, `/orders/paymentlinks/${id}`,)
+        return get(this._client, `/orders/paymentlinks/${id}`, )
     }
     cancelPaymentLinkEtf(id) {
-        return _delete(this._client, `/etforders/paymentlinks/${id}`,)
+        return _delete(this._client, `/etforders/paymentlinks/${id}`, )
     }
     cancelPaymentLinkRegular(id) {
-        return _delete(this._client, `/orders/paymentlinks/${id}`,)
+        return _delete(this._client, `/orders/paymentlinks/${id}`, )
     }
     resendPaymentLinkEtf(id) {
-        return post(this._client, `/etforders/paymentlinks/${id}/notify`,)
+        return post(this._client, `/etforders/paymentlinks/${id}/notify`, )
     }
     resendPaymentLinkRegular(id) {
-        return post(this._client, `/etforders/paymentlinks/${id}/notify`,)
+        return post(this._client, `/etforders/paymentlinks/${id}/notify`, )
     }
     verifyBankDetails(data) {
         return post(this._client, `/verification/cstmrbankdetails`, data)
     }
-    createEmandateLink(data,extCustomerId) {
+    createEmandateLink(data, extCustomerId) {
         return post(this._client, `/customers/${extCustomerId}/emandate/createlink`, data)
     }
-    cancelEmandateLink(id,extCustomerId) {
+    cancelEmandateLink(id, extCustomerId) {
         return _delete(this._client, `/customers/${extCustomerId}/emandate/${id}`)
     }
-    getEmandateLink(id,extCustomerId) {
+    getEmandateLink(id, extCustomerId) {
         return get(this._client, `/customers/${extCustomerId}/emandate/${id}`)
     }
-    resendEmandateLink(id,extCustomerId) {
-        return post(this._client, `/customers/${extCustomerId}/emandate/${id}/notify`)
-    }
-    // emergency sell
+    resendEmandateLink(id, extCustomerId) {
+            return post(this._client, `/customers/${extCustomerId}/emandate/${id}/notify`)
+        }
+        // emergency sell
     emergencySellCreate(extCustomerId, order) {
         return post(this._client, `/customers/${extCustomerId}/emergencysellorders`, order)
 
@@ -620,7 +620,7 @@ class Client {
         return get(this._client, `/customers/${extCustomerId}/emergencysellorders`, additionalParametrs)
     }
 
-    
+
 
     // jewellery sell
     jewelleryCreate(extCustomerId, order) {
@@ -631,6 +631,7 @@ class Client {
         return get(this._client, `/customers/${extCustomerId}/jewelleryorders/${orderid}`)
 
     }
+
     jewelleryList(extCustomerId, queryParams) {
         const additionalParametrs = {
             queryParams: queryParams
@@ -641,21 +642,122 @@ class Client {
         return post(this._client, `/customers/${customerId}/goldtojewellery`, data)
 
     }
-    applyLein(data){
+    jewelleryPurityCertificate(extCustomerId, id) {
+        return get(this._client, `/puritycertificate/${id}`)
+
+    }
+    applyLein(data) {
         return post(this._client, `/liens`, data)
 
     }
-    getLein(id){
-        return get(this._client, `/liens/${id}`,)
+    getLein(id) {
+        return get(this._client, `/liens/${id}`, )
     }
-    addServiceChargePaymentDetail(id,data){
+    addServiceChargePaymentDetail(id, data) {
         return post(this._client, `/liens/${id}/addservicechargepayment`, data)
 
     }
+    shippment_list(extCustomerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+
+        return get(this._client, `/customers/${extCustomerId}/shipments`, additionalParametrs)
+    }
+    shippment_get(extCustomerId, id) {
+        return get(this._client, `/customers/${extCustomerId}/shipments/${id}`)
+    }
+    listCoinOrder(extCustomerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${extCustomerId}/coinorders`, additionalParametrs)
+    }
+    getCoinOrder(extCustomerId, orderId) {
+        return get(this._client, `/customers/${extCustomerId}/coinorders/${orderId}`)
+    }
+
+    getLtvRate(extBranchId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/benchmarkrate`, additionalParametrs)
+    }
+
+    getPincode(pincode) {
+        return get(this._client, `/pincode/${pincode}`, )
+    }
+
+
+    // current promotions
+    getCurrentpromotions(queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/currentpromotions`, additionalParametrs)
+    }
+
+    // record interest
+    createRecordInterest(customerId, data) {
+        return post(this._client, `/customers/${customerId}/recordinterest`, data)
+    }
+
+    // product catalague
+
+    getProductCatalogue(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+    }
+
+    getProductById(customerId, productId) {
+        return get(this._client, `/customers/${customerId}/products/${productId}`)
+    }
+
+    // contact support
+
+
+    createContactSupport(customerId, data) {
+        return post(this._client, `/customers/${customerId}/contactsupport`, data)
+    }
+
+
+    //product order
+
+    productOrderCreate(extCustomerId, order) {
+        return post(this._client, `/customers/${extCustomerId}/productorder`, order)
+
+    }
+
+
+    // advance purchase
+
+    advancepurchaselist(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products`, additionalParametrs)
+    }
+
+    advancepurchaseget(customerId, productId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/products/${productId}`, additionalParametrs)
+    }
+    getcustomerForSDK(customerId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}`, additionalParametrs)
+    }
+
+
 
 
 }
 
-exports.Client = async function (config) {
+exports.Client = async function(config) {
     return new Client(config);
 }

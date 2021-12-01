@@ -4,14 +4,8 @@ const DvaraGold = require('../../cliient/dvaragold');
 
 async function test() {
     let client = await DvaraGold.Client(config);
-    var queryStringParameters = {//This are the optional parameters.
-        category: 'coin',
-        // bullionName:'Silver',
-        // bullionId:'S1'
-    }
-    var extCustomerId = 'EXT0'
-
-    return await client.getProducts(queryStringParameters, extCustomerId);
+    var pincode = '402202-'
+    return await client.getPincode(pincode);
 }
 test()
     .then(result => {
