@@ -32,25 +32,25 @@ function authenticate(config, callback) {
     console.log("Authenticating with User Pool");
 
     cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function(result) {
+        onSuccess: function (result) {
             callback(null, {
                 idToken: result.getIdToken().getJwtToken(),
                 accessToken: result.getAccessToken().getJwtToken()
             });
         },
-        onFailure: function(err) {
+        onFailure: function (err) {
             console.log(err.message ? err.message : err);
             callback(err, null);
         },
-        newPasswordRequired: function() {
+        newPasswordRequired: function () {
             console.log("Given user needs to set a new password");
             callback("Given user needs to set a new password", null);
         },
-        mfaRequired: function() {
+        mfaRequired: function () {
             console.log("MFA is not currently supported");
             callback("MFA is not currently supported", null);
         },
-        customChallenge: function() {
+        customChallenge: function () {
             console.log("Custom challenge is not currently supported");
             callback("Custom challenge is not currently supported", null);
         }
@@ -73,7 +73,7 @@ function getCredentials(config, userTokens, callback) {
         Logins: logins
     });
 
-    AWS.config.credentials.get(function(err) {
+    AWS.config.credentials.get(function (err) {
         if (err) {
             console.log(err.message ? err.message : err);
             callback(err, null)
@@ -85,12 +85,12 @@ function getCredentials(config, userTokens, callback) {
 }
 
 function authenticateClient(config, callback) {
-    authenticate(config, function(err, tokens) {
+    authenticate(config, function (err, tokens) {
         if (err) {
             callback(err, null);
             return;
         }
-        getCredentials(config, tokens, function(err, _tokens) {
+        getCredentials(config, tokens, function (err, _tokens) {
             if (err) {
                 callback(err, null);
                 return;
@@ -117,7 +117,7 @@ function authenticateClient(config, callback) {
 async function authenticateClientAsync(config) {
     return new Promise((resolve, reject) => {
         try {
-            authenticateClient(config, function(err, client, expireTime) {
+            authenticateClient(config, function (err, client, expireTime) {
                 if (err || !client) {
                     reject(err ? err : "Unable to authenticate");
                 } else {
@@ -133,10 +133,10 @@ async function get(client, api, additionalParametrs) {
     return new Promise((resolve, reject) => {
         client
             .invokeApi(null, api, 'GET', additionalParametrs)
-            .then(function(result) {
+            .then(function (result) {
                 resolve(result.data)
             })
-            .catch(function(result) {
+            .catch(function (result) {
                 reject(getErrorResponse(result));
             });
     })
@@ -149,10 +149,10 @@ async function post(client, api, parameters) {
                 'POST', {},
                 parameters
             )
-            .then(function(result) {
+            .then(function (result) {
                 resolve(result.data)
             })
-            .catch(function(result) {
+            .catch(function (result) {
                 reject(getErrorResponse(result));
             });
 
@@ -166,10 +166,10 @@ async function put(client, api, parameters) {
                 'PUT', {},
                 parameters
             )
-            .then(function(result) {
+            .then(function (result) {
                 resolve(result.data)
             })
-            .catch(function(result) {
+            .catch(function (result) {
                 reject(getErrorResponse(result));
             });
 
@@ -185,10 +185,10 @@ async function _delete(client, api, parameters) {
                 'DELETE', {},
                 parameters
             )
-            .then(function(result) {
+            .then(function (result) {
                 resolve(result.data)
             })
-            .catch(function(result) {
+            .catch(function (result) {
                 reject(getErrorResponse(result));
             });
 
@@ -213,7 +213,7 @@ class Client {
         this._config = config;
         const self = this;
         return new Promise((resolve, reject) => {
-            self.renewClientToken(function(err, status) {
+            self.renewClientToken(function (err, status) {
                 resolve(self)
             })
         })
@@ -572,22 +572,22 @@ class Client {
         return post(this._client, `/etforders/paymentlinks`, data)
     }
     getPaymentLinkEtf(id) {
-        return get(this._client, `/etforders/paymentlinks/${id}`, )
+        return get(this._client, `/etforders/paymentlinks/${id}`,)
     }
     getPaymentLinkRegular(id) {
-        return get(this._client, `/orders/paymentlinks/${id}`, )
+        return get(this._client, `/orders/paymentlinks/${id}`,)
     }
     cancelPaymentLinkEtf(id) {
-        return _delete(this._client, `/etforders/paymentlinks/${id}`, )
+        return _delete(this._client, `/etforders/paymentlinks/${id}`,)
     }
     cancelPaymentLinkRegular(id) {
-        return _delete(this._client, `/orders/paymentlinks/${id}`, )
+        return _delete(this._client, `/orders/paymentlinks/${id}`,)
     }
     resendPaymentLinkEtf(id) {
-        return post(this._client, `/etforders/paymentlinks/${id}/notify`, )
+        return post(this._client, `/etforders/paymentlinks/${id}/notify`,)
     }
     resendPaymentLinkRegular(id) {
-        return post(this._client, `/etforders/paymentlinks/${id}/notify`, )
+        return post(this._client, `/etforders/paymentlinks/${id}/notify`,)
     }
     verifyBankDetails(data) {
         return post(this._client, `/verification/cstmrbankdetails`, data)
@@ -602,9 +602,9 @@ class Client {
         return get(this._client, `/customers/${extCustomerId}/emandate/${id}`)
     }
     resendEmandateLink(id, extCustomerId) {
-            return post(this._client, `/customers/${extCustomerId}/emandate/${id}/notify`)
-        }
-        // emergency sell
+        return post(this._client, `/customers/${extCustomerId}/emandate/${id}/notify`)
+    }
+    // emergency sell
     emergencySellCreate(extCustomerId, order) {
         return post(this._client, `/customers/${extCustomerId}/emergencysellorders`, order)
 
@@ -651,7 +651,7 @@ class Client {
 
     }
     getLein(id) {
-        return get(this._client, `/liens/${id}`, )
+        return get(this._client, `/liens/${id}`,)
     }
     addServiceChargePaymentDetail(id, data) {
         return post(this._client, `/liens/${id}/addservicechargepayment`, data)
@@ -685,7 +685,7 @@ class Client {
     }
 
     getPincode(pincode) {
-        return get(this._client, `/pincode/${pincode}`, )
+        return get(this._client, `/pincode/${pincode}`,)
     }
 
 
@@ -754,10 +754,22 @@ class Client {
     }
 
 
+    advanceOrderInvoice(customerId, orderId, queryParams) {
+        const additionalParametrs = {
+            queryParams: queryParams
+        }
+        return get(this._client, `/customers/${customerId}/advanceorderinvoice/${orderId}`, additionalParametrs)
+    }
+
+    ssoUrl(data) {
+        return post(this._client, `/auth/sso_url`, data)
+    }
+
+
 
 
 }
 
-exports.Client = async function(config) {
+exports.Client = async function (config) {
     return new Client(config);
 }
