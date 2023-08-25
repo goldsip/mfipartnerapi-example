@@ -5,6 +5,8 @@ const extCustomerId = 'AMITCS002'
 const queryParams = {
     // bullionName: 'Silver',
     // category: 'coin'
+    // maxredeemableweight: 10
+
 }
 
 
@@ -14,7 +16,7 @@ async function test() {
 }
 test()
     .then(result => {
-        console.dir(result)
+        console.log(JSON.stringify(result))
     })
     .catch(err => {
         console.error(JSON.stringify(err))

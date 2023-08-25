@@ -1,4 +1,4 @@
-let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'dev';
+let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'kgfs';
 const config = require('../config/credentials.json')[STAGE];
 const DvaraGold = require('../cliient/dvaragold');
 
