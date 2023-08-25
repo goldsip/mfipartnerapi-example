@@ -1,7 +1,8 @@
 const shortid = require('shortid')
-let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'dev';
+let STAGE = process.env.mygold_stage ? process.env.mygold_stage : 'nstore';
 const config = require('../../config/credentials.json')[STAGE];
 const DvaraGold = require('../../cliient/dvaragold');
+const uuid = require('uuid');
 
 async function test() {
     let client = await DvaraGold.Client(config);
@@ -13,43 +14,14 @@ async function test() {
         _customers.push(
             {
                 name: {
-                    first: `John ${_id}`,
-                    middle: 'Trivia',
-                    last: 'Somtune'
+                    fullName:"John wick"
                 },
-                extCustomerId: `upiAccountChnages01${i}`,
-                dob: "1957-09-05",
-                phone: { mobile: `860036367${i}` },
-                idProof: [{
-                    documentId: `ABC1234XV${i}`,
-                    documentType: 'maskedAadhaar',
-                    documentImage: {
-                        id: '1234',
-                        uri: '/customers/uploaded/ce65ad07-a0b1-452b-ba19-7cea4f149360'
-                    },
-                    issueDate: new Date(),
-                    validUntil: new Date()
-                }],
-                address: {
-                    houseNumber: "1", streetName: "2", district: "Tvm", pinCode: 402202, state: "IN-KL", country: "India", stdCode: 0470
-                },
-                fatherName: {
-                    first: "Groverty ",
-                    last: `${_id}`
-                },
-                centerName: "Center",
-                maritalStatus: "married",
-                localLanguage: "Tamil",
-                branchId: 'EXT002311',
-                gender: 'm',
-                "bankAccount": {
-                    "accountNumber": "account",
-                    "ifsc": "idh",
-                    "accountName": "28373",
-                    "bankName": "1od8d",
-                    "branchName": "banrch anme"
-                },
-                upiAccount: { address: "okvighnesh@icici" }
+                extCustomerId: '9398393292899', // unique customerId in your system
+                phone: { mobile: `86003636711` },
+                localLanguage: "en",
+                branchId: 'bba71e61-cabd-42a6-afe9-34c5ba1e8473', // extBranchId 
+                agentId: '7901cb32-7ea5-4c07-ad40-dafe2266462f'  //extAgentId of a branch
+
             }
         )
     }
